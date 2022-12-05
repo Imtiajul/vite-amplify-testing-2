@@ -1,29 +1,14 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import rollupNodePolyFill from "rollup-plugin-node-polyfills";
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import { fileURLToPath, URL } from 'url'
+
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
-  optimizeDeps: {
-    esbuildOptions: {
-      // Node.js global to browser globalThis
-      define: {
-        global: "globalThis", //<-- AWS SDK 
-      },
-    },
-  },
-  build: {
-    rollupOptions: {
-      plugins: [
-        // Enable rollup polyfills plugin
-        // used during production bundling
-        rollupNodePolyFill(),
-      ],
-    },
-  },
+  plugins: [react()], 
   resolve: {
     alias: {
-      './runtimeConfig': './runtimeConfig.browser', // <-- Fix from above
-    },
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      './runtimeConfig': './runtimeConfig.browser',
+    }
   }
-});
+})
